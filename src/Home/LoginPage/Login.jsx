@@ -3,8 +3,12 @@ import Container from "@mui/material/Container";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  
+  const navigate = useNavigate();
+
   return (
     <div className="flex justify-center items-center flex-col bg-gradient-to-r from-blue-400 to-blue-500  h-screen">
       <Container
@@ -33,6 +37,7 @@ export default function Login() {
           bg-gradient-to-r from-blue-500 to-blue-400 
         text-white shadow-lg 
           hover:scale-105 transition"
+          onClick={() => navigate("/home")}
         >
           Login
         </Button>

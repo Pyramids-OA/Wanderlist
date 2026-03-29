@@ -1,7 +1,16 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./Home/HomePage/Home";
+import Login from "./Home/LoginPage/Login";
+
 function App() {
   return (
     <>
-      <h1 className="text-3xl m-10 text-sky-600">Wanderlist</h1>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/Home" element={<Home />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
