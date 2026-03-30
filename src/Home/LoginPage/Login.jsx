@@ -5,9 +5,34 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
+//REACT
+import { useContext, useState } from "react";
+import { LoginInputContext } from "../../contexts/LoginFormInputContext";
 export default function Login() {
-  
+  const { loginForm, setLoginForm } = useContext(LoginInputContext);
+
+  const [messageError, setMessageError] = useState("");
   const navigate = useNavigate();
+
+  // FUNCTION OF BUTTON
+
+  function handleClick() {
+    if (loginForm.username == "" && loginForm.password == "") {
+      setMessageError("Please fill out the form");
+    } else if (loginForm.username == "") {
+      setMessageError("Please enter your username");
+    } else if (loginForm.username.length < 3) {
+      setMessageError("Username must be at least 3 characters");
+    } else if (loginForm.password == "") {
+      setMessageError("Please enter your password");
+    } else if (loginForm.password.length < 8) {
+      setMessageError("Password must be at least 8 ");
+    } else {
+      setMessageError("");
+      localStorage.setItem("username", loginForm.username);
+      navigate("/home");
+    }
+  }
 
   return (
     <div className="flex justify-center items-center flex-col bg-gradient-to-r from-blue-400 to-blue-500  h-screen">
@@ -23,21 +48,30 @@ export default function Login() {
           label="Username"
           variant="outlined"
           className="!m-2 w-80 hover:scale-105 transition"
+          value={loginForm.username}
+          onChange={(event) => {
+            setLoginForm({ ...loginForm, username: event.target.value });
+          }}
         />
         <TextField
           id="outlined-password-input"
           label="Password"
           type="password"
           className="!m-2 w-80 hover:scale-105 transition"
+          value={loginForm.password}
+          onChange={(event) => {
+            setLoginForm({ ...loginForm, password: event.target.value });
+          }}
         />
+        <h2 className="m-2 text-red-500">{messageError}</h2>
 
         <Button
           variant="contained"
           className="w-80 py-2 mt-5 rounded-full 
           bg-gradient-to-r from-blue-500 to-blue-400 
         text-white shadow-lg 
-          hover:scale-105 transition"
-          onClick={() => navigate("/home")}
+          hover:scale-105 transition !rounded-full"
+          onClick={handleClick}
         >
           Login
         </Button>
