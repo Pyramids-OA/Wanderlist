@@ -5,16 +5,15 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
-//REACT
+// REACT
 import { useContext, useState } from "react";
 import { LoginInputContext } from "../../contexts/LoginFormInputContext";
+
 export default function Login() {
-  const { loginForm, setLoginForm } = useContext(LoginInputContext);
+  const { loginForm, setLoginForm, setUser } = useContext(LoginInputContext);
 
   const [messageError, setMessageError] = useState("");
   const navigate = useNavigate();
-
-  // FUNCTION OF BUTTON
 
   function handleClick() {
     if (loginForm.username == "" && loginForm.password == "") {
@@ -26,51 +25,50 @@ export default function Login() {
     } else if (loginForm.password == "") {
       setMessageError("Please enter your password");
     } else if (loginForm.password.length < 8) {
-      setMessageError("Password must be at least 8 ");
+      setMessageError("Password must be at least 8");
     } else {
       setMessageError("");
-      localStorage.setItem("username", loginForm.username);
+
+     
+      setUser(loginForm.username);
+
       navigate("/home");
     }
   }
 
   return (
-    <div className="flex justify-center items-center flex-col bg-gradient-to-r from-blue-400 to-blue-500  h-screen">
+    <div className="flex justify-center items-center flex-col bg-gradient-to-r from-blue-400 to-blue-500 h-screen">
       <Container
         maxWidth="sm"
-        className="p-10  shadow-xl rounded-xl flex justify-center items-center flex-col bg-white/20 backdrop-blur-xl"
+        className="p-10 shadow-xl rounded-xl flex justify-center items-center flex-col bg-white/20 backdrop-blur-xl"
       >
         <AccountCircleIcon style={{ fontSize: "50px", color: "white" }} />
-        <h1 className="text-white text-4xl p-4 font-bold ">User Login</h1>
+        <h1 className="text-white text-4xl p-4 font-bold">User Login</h1>
 
         <TextField
-          id="outlined-basic"
           label="Username"
-          variant="outlined"
           className="!m-2 w-80 hover:scale-105 transition"
           value={loginForm.username}
-          onChange={(event) => {
-            setLoginForm({ ...loginForm, username: event.target.value });
-          }}
+          onChange={(e) =>
+            setLoginForm({ ...loginForm, username: e.target.value })
+          }
         />
+
         <TextField
-          id="outlined-password-input"
           label="Password"
           type="password"
           className="!m-2 w-80 hover:scale-105 transition"
           value={loginForm.password}
-          onChange={(event) => {
-            setLoginForm({ ...loginForm, password: event.target.value });
-          }}
+          onChange={(e) =>
+            setLoginForm({ ...loginForm, password: e.target.value })
+          }
         />
+
         <h2 className="m-2 text-red-500">{messageError}</h2>
 
         <Button
           variant="contained"
-          className="w-80 py-2 mt-5 rounded-full 
-          bg-gradient-to-r from-blue-500 to-blue-400 
-        text-white shadow-lg 
-          hover:scale-105 transition !rounded-full"
+          className="w-80 py-2 mt-5 bg-gradient-to-r from-blue-500 to-blue-400 text-white shadow-lg hover:scale-105 transition !rounded-full"
           onClick={handleClick}
         >
           Login

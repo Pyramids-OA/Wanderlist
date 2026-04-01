@@ -2,10 +2,9 @@ import ExploreIcon from "@mui/icons-material/Explore";
 import WavingHandIcon from "@mui/icons-material/WavingHand";
 import { useContext } from "react";
 import { LoginInputContext } from "../../contexts/LoginFormInputContext";
+
 export default function Navbar() {
-  const context = useContext(LoginInputContext);
-  const loginForm = context?.loginForm;
-  //const {loginInput} = useContext(LoginInputContext);
+  const { userName } = useContext(LoginInputContext);
 
   return (
     <div className="flex items-center h-20 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500">
@@ -14,7 +13,7 @@ export default function Navbar() {
         <h1> Wanderlist</h1>
       </div>
       <div className="flex justify-end items-center ml-auto mr-6 text-blue-200 text-xl">
-        <h1> Welcome {loginForm.username} </h1>
+        <h1> Welcome {userName}</h1>
         <WavingHandIcon sx={{ fontSize: "50px", marginLeft: "10px" }} />
       </div>
     </div>
