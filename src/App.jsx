@@ -2,6 +2,7 @@ import Home from "./Home/HomePage/Home";
 import Login from "./Home/LoginPage/Login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LoginInputProvider } from "./contexts/LoginFormInputContext";
+import CardDetails from "./Home/CardDetails/CardDetails";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/Home" element={<Home />} />
+            <Route path="/home/details" element={<CardDetails />} />
           </Routes>
         </BrowserRouter>
       </LoginInputProvider>
