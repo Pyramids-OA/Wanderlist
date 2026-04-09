@@ -1,8 +1,8 @@
 import LocationCard from "./LocationCard";
 import Navbar from "./Navbar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-
+import { PlacesContext } from "../../contexts/PlacesContext";
 
 // MUI
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
@@ -13,11 +13,13 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 export default function Home() {
-  const [places, setPlaces] = useState([]);
+ 
+  const { places, setPlaces } = useContext(PlacesContext);
   const [categoryType, setCategoryType] = useState("all");
   let cancelAxios;
 
   useEffect(() => {
+    if (places.length === 0){
     axios
       .get("https://69cd38b5ddc3cabb7bd2599a.mockapi.io/api/v1/places/Places", {
         cancelToken: new axios.CancelToken((c) => {
@@ -34,7 +36,7 @@ export default function Home() {
     return () => {
       if (cancelAxios) cancelAxios();
     };
-  }, []);
+}}, []);
 
   return (
     <div className="bg-gradient-to-r from-blue-300 to-blue-400 h-auto pb-50">
@@ -82,6 +84,7 @@ export default function Home() {
               fontSize: "20px",
               marginLeft: "8px",
               fontWeight: "bold",
+              textTransform: "capitalize",
             }}
           >
             All
@@ -106,6 +109,7 @@ export default function Home() {
               fontSize: "20px",
               marginLeft: "8px",
               fontWeight: "bold",
+              textTransform: "capitalize",
             }}
           >
             Historical
@@ -125,6 +129,7 @@ export default function Home() {
               fontSize: "20px",
               marginLeft: "8px",
               fontWeight: "bold",
+              textTransform: "capitalize",
             }}
           >
             Natural
@@ -153,6 +158,7 @@ export default function Home() {
               fontSize: "20px",
               marginLeft: "8px",
               fontWeight: "bold",
+              textTransform: "capitalize",
             }}
           >
             Entertainment
