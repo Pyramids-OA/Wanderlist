@@ -5,7 +5,14 @@ import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 import { useNavigate } from "react-router-dom";
 
-export default function LocationCard({ image, name, category, rating, desc }) {
+export default function LocationCard({
+  image,
+  name,
+  category,
+  rating,
+  desc,
+  id,
+}) {
   const navigate = useNavigate();
 
   function handelRating(r) {
@@ -38,7 +45,7 @@ export default function LocationCard({ image, name, category, rating, desc }) {
     >
       <CardActionArea
         onClick={() => {
-          navigate("/home/details");
+          navigate(`/home/details/${id}`);
         }}
       >
         <CardMedia

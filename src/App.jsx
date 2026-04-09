@@ -12,7 +12,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/Home" element={<Home />} />
-            <Route path="/home/details" element={<CardDetails />} />
+            <Route path="/home/details/:id" element={<CardDetails />} />
           </Routes>
         </BrowserRouter>
       </LoginInputProvider>
