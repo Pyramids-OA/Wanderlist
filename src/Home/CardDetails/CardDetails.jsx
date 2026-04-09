@@ -1,8 +1,14 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState, useContext } from "react";
+
+import { PlacesContext } from "../../contexts/PlacesContext";
 
 //MUI
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogActions from "@mui/material/DialogActions";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
@@ -14,13 +20,22 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import HourglassFullIcon from "@mui/icons-material/HourglassFull";
 import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
 
 export default function CardDetails() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [placeDetails, setPlacesDetails] = useState({});
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showUpdateDialog, setShowUpdateDialog] = useState(false);
+  const [inputUpdateDialog, setInputUpdateDialog] = useState({
+    rating: "",
+    entryFee: "",
+    openHours: "",
+  });
+  const { places, setPlaces } = useContext(PlacesContext);
 
-  let cancelAxios;
+  const placeDetails = places.find((p) => Number(p.id) === Number(id)) || {};
 
   function handelRating(r) {
     if (Math.round(r) === 5) {
@@ -37,27 +52,44 @@ export default function CardDetails() {
       return "No rating";
     }
   }
-
-  useEffect(() => {
-    axios
-      .get(`https://69cd38b5ddc3cabb7bd2599a.mockapi.io/api/v1/places/Places`, {
-        cancelToken: new axios.CancelToken((c) => {
-          cancelAxios = c;
-        }),
-      })
-      .then(function (response) {
-        const place = response.data.find((p) => p.id === Number(id));
-        setPlacesDetails(place);
-      })
-      .catch(function (error) {
-        if (axios.isCancel(error)) return;
-        console.log("Error fetching places:", error);
-      });
-
-    return () => {
-      if (cancelAxios) cancelAxios();
-    };
-  }, [id]);
+  // FUNCTION UPDATE
+  function openShowUpdateDialog() {
+    setShowUpdateDialog(true);
+  }
+  function handleUpdateDialogClose() {
+    setShowUpdateDialog(false);
+  }
+  function handleUpdateDialog() {
+    const updatedPlaces = places.map((p) => {
+      if (Number(p.id) === Number(id)) {
+        return {
+          ...p,
+          rating: inputUpdateDialog.rating,
+          entryFee: inputUpdateDialog.entryFee,
+          openingHours: inputUpdateDialog.openHours,
+        };
+      }
+      return p;
+    });
+    setPlaces(updatedPlaces);
+    setShowUpdateDialog(false);
+    navigate(`/home/details/${id}`);
+  }
+  // FUNCTION DELETE
+  function openShowDialog() {
+    setShowDeleteDialog(true);
+  }
+  function handleDeleteDialogClose() {
+    setShowDeleteDialog(false);
+  }
+  function handleDeleteDialog() {
+    const updatedPlaces = places.filter((p) => {
+      return p.id != id;
+    });
+    setPlaces(updatedPlaces);
+    setShowDeleteDialog(false);
+    navigate("/home");
+  }
 
   return (
     <div className="bg-gradient-to-r from-blue-400 to-blue-500 ">
@@ -67,7 +99,7 @@ export default function CardDetails() {
             height: "auto",
             p: 2,
             borderRadius: "30px",
-            paddingBottom: 10,
+            paddingBottom: 8,
           }}
           className=" bg-white/20 backdrop-blur-xl"
         >
@@ -86,12 +118,16 @@ export default function CardDetails() {
             </div>
 
             <div className="flex gap-2">
-              <Button variant="contained">
+              <Button variant="contained" onClick={openShowUpdateDialog}>
                 <EditIcon sx={{ marginRight: 1 }} />
                 Edit
               </Button>
 
-              <Button variant="contained" color="error">
+              <Button
+                variant="contained"
+                color="error"
+                onClick={openShowDialog}
+              >
                 <DeleteIcon sx={{ marginRight: 1 }} />
                 Delete
               </Button>
@@ -123,7 +159,7 @@ export default function CardDetails() {
             <h1 className="font-bold">Additional Information</h1>
             <h3>
               <AttachMoneyIcon className="text-blue-500" />
-              <span className="font-bold">Entry Fee:</span>
+              <span className="font-bold">Entry Fee:$</span>
               {placeDetails?.entryFee}
             </h3>
             <h3>
@@ -134,6 +170,94 @@ export default function CardDetails() {
           </div>
         </Box>
       </Container>
+      {/* DELETE DIALOG */}
+      <Dialog
+        style={{ direction: "ltr" }}
+        open={showDeleteDialog}
+        onClose={handleDeleteDialogClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Are you sure you want to delete the site?
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            You cannot undo a deletion once it has benn completed
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteDialogClose}>Close</Button>
+          <Button color="error" onClick={handleDeleteDialog}>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/*=== DELETE DIALOG ===*/}
+
+      {/* UPDATE DIALOG */}
+      <Dialog
+        open={showUpdateDialog}
+        onClose={handleUpdateDialogClose}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle sx={{ fontWeight: "bold" }}>Edit Information</DialogTitle>
+
+        <DialogContent>
+          <Stack spacing={2} mt={1} alignItems="center">
+            <TextField
+              label="Rating Site "
+              name="rating"
+              fullWidth
+              value={inputUpdateDialog.rating}
+              onChange={(e) => {
+                setInputUpdateDialog({
+                  ...inputUpdateDialog,
+                  rating: e.target.value,
+                });
+              }}
+            />
+
+            <TextField
+              label="Entry Fee (USD)"
+              name="entryFee"
+              type="number"
+              fullWidth
+              value={inputUpdateDialog.entryFee}
+              onChange={(e) => {
+                setInputUpdateDialog({
+                  ...inputUpdateDialog,
+                  entryFee: e.target.value,
+                });
+              }}
+            />
+
+            <TextField
+              label="Opening Hours"
+              name="openHours"
+              fullWidth
+              value={inputUpdateDialog.openHours}
+              onChange={(e) => {
+                setInputUpdateDialog({
+                  ...inputUpdateDialog,
+                  openHours: e.target.value,
+                });
+              }}
+            />
+          </Stack>
+        </DialogContent>
+
+        <DialogActions>
+          <Button color="error" onClick={handleUpdateDialogClose}>
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={handleUpdateDialog}>
+            Save Changes
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/*=== UPDATE DIALOG ===*/}
     </div>
   );
 }
