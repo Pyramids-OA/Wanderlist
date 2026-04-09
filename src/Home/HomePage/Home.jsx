@@ -11,8 +11,6 @@ import ForestIcon from "@mui/icons-material/Forest";
 import ParaglidingIcon from "@mui/icons-material/Paragliding";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import IconButton from "@mui/material/IconButton";
-import Stack from "@mui/material/Stack";
 
 export default function Home() {
   const [places, setPlaces] = useState([]);
@@ -168,6 +166,7 @@ export default function Home() {
             return (
               <LocationCard
                 key={place.id}
+                id={place.id}
                 name={place.name}
                 desc={place.description}
                 image={place.image}
@@ -179,6 +178,7 @@ export default function Home() {
             return (
               <LocationCard
                 key={place.id}
+                id={place.id}
                 name={place.name}
                 desc={place.description}
                 image={place.image}

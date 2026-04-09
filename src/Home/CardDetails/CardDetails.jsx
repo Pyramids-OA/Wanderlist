@@ -1,3 +1,8 @@
+import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+//MUI
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
@@ -11,24 +16,73 @@ import HourglassFullIcon from "@mui/icons-material/HourglassFull";
 import Typography from "@mui/material/Typography";
 
 export default function CardDetails() {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [placeDetails, setPlacesDetails] = useState({});
+
+  let cancelAxios;
+
+  function handelRating(r) {
+    if (Math.round(r) === 5) {
+      return "🌟🌟🌟🌟🌟";
+    } else if (Math.round(r) === 4) {
+      return "🌟🌟🌟🌟";
+    } else if (Math.round(r) === 3) {
+      return "⭐⭐⭐";
+    } else if (Math.round(r) === 2) {
+      return "⭐⭐";
+    } else if (Math.round(r) === 1) {
+      return "⭐";
+    } else {
+      return "No rating";
+    }
+  }
+
+  useEffect(() => {
+    axios
+      .get(`https://69cd38b5ddc3cabb7bd2599a.mockapi.io/api/v1/places/Places`, {
+        cancelToken: new axios.CancelToken((c) => {
+          cancelAxios = c;
+        }),
+      })
+      .then(function (response) {
+        const place = response.data.find((p) => p.id === Number(id));
+        setPlacesDetails(place);
+      })
+      .catch(function (error) {
+        if (axios.isCancel(error)) return;
+        console.log("Error fetching places:", error);
+      });
+
+    return () => {
+      if (cancelAxios) cancelAxios();
+    };
+  }, [id]);
+
   return (
-    <div className="bg-gradient-to-r from-blue-400 to-blue-500">
-      <Container maxWidth="md">
+    <div className="bg-gradient-to-r from-blue-400 to-blue-500 ">
+      <Container maxWidth="md" height="">
         <Box
           sx={{
-            height: "100vh",
+            height: "auto",
             p: 2,
             borderRadius: "30px",
+            paddingBottom: 10,
           }}
           className=" bg-white/20 backdrop-blur-xl"
         >
           <div className="mt-1 flex justify-between items-center ">
             <div className="flex items-center">
-              <Button variant="contained">
+              <Button
+                variant="contained"
+                onClick={() => {
+                  navigate("/home");
+                }}
+              >
                 <ArrowBackIcon sx={{ marginRight: 1 }} />
                 Back
               </Button>
-              <h1 className="ml-2 font-bold">Card Details</h1>
+              <h1 className="ml-2 font-bold">{placeDetails?.name}</h1>
             </div>
 
             <div className="flex gap-2">
@@ -45,11 +99,11 @@ export default function CardDetails() {
           </div>
 
           <div className="mt-2">
-            <img src="/paris.jpeg" className="rounded-md" />
+            <img src={placeDetails?.imageDetails} className="rounded-md" />
             <div className="flex gap-2 mt-1 font-bold">
-              <h1>Historical</h1>
-              <h1>⭐⭐⭐⭐⭐</h1>
-              <h1>4.8</h1>
+              <h1>{placeDetails?.category}</h1>
+              <h1>{handelRating(placeDetails?.rating)}</h1>
+              <h1>{placeDetails?.rating}</h1>
             </div>
           </div>
           <Card
@@ -58,13 +112,10 @@ export default function CardDetails() {
           >
             <CardContent>
               <Typography sx={{ fontSize: 20, fontWeight: "bold" }}>
-                Eiffel Tower Details
+                {placeDetails?.name} Details
               </Typography>
               <Typography variant="h7" component="div">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam
-                molestias corporis similique vel praesentium! Aspernatur omnis
-                beatae sapiente molestias quasi a temporibus vel reprehenderit
-                sunt? Quos tempora in quibusdam accusamus!
+                {placeDetails?.details}
               </Typography>
             </CardContent>
           </Card>
@@ -72,13 +123,13 @@ export default function CardDetails() {
             <h1 className="font-bold">Additional Information</h1>
             <h3>
               <AttachMoneyIcon className="text-blue-500" />
-              <span className="font-bold">Entry Fee:</span> $25 for adults,
-              discounts availabl for children and seniors
+              <span className="font-bold">Entry Fee:</span>
+              {placeDetails?.entryFee}
             </h3>
             <h3>
               <HourglassFullIcon className="text-blue-500" />
-              <span className="font-bold">Opening Hours:</span> Open daily form
-              9:00 AM to 11:45 PM
+              <span className="font-bold">Opening Hours:</span>
+              {placeDetails?.openingHours}
             </h3>
           </div>
         </Box>
