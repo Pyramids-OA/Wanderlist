@@ -1,14 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useContext } from "react";
-
 import { PlacesContext } from "../../contexts/PlacesContext";
+import DeleteDialog from "./DeleteDialog";
 
 //MUI
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogActions from "@mui/material/DialogActions";
+
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
@@ -20,22 +16,22 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import HourglassFullIcon from "@mui/icons-material/HourglassFull";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Stack from "@mui/material/Stack";
+import UpdateDialog from "./UpdateDialog";
 
 export default function CardDetails() {
   const navigate = useNavigate();
   const { id } = useParams();
+
+  const { places, setPlaces } = useContext(PlacesContext);
+  const placeDetails = places.find((p) => Number(p.id) === Number(id)) || {};
+  const [inputUpdateDialog, setInputUpdateDialog] = useState({
+    rating: placeDetails?.rating || "",
+    entryFee: placeDetails?.entryFee || "",
+    openHours: placeDetails?.openingHours || "",
+  });
+
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showUpdateDialog, setShowUpdateDialog] = useState(false);
-  const [inputUpdateDialog, setInputUpdateDialog] = useState({
-    rating: "",
-    entryFee: "",
-    openHours: "",
-  });
-  const { places, setPlaces } = useContext(PlacesContext);
-
-  const placeDetails = places.find((p) => Number(p.id) === Number(id)) || {};
 
   function handelRating(r) {
     if (Math.round(r) === 5) {
@@ -171,92 +167,22 @@ export default function CardDetails() {
         </Box>
       </Container>
       {/* DELETE DIALOG */}
-      <Dialog
-        style={{ direction: "ltr" }}
-        open={showDeleteDialog}
-        onClose={handleDeleteDialogClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          Are you sure you want to delete the site?
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            You cannot undo a deletion once it has benn completed
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDeleteDialogClose}>Close</Button>
-          <Button color="error" onClick={handleDeleteDialog}>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <DeleteDialog
+        showDeleteDialog={showDeleteDialog}
+        handleDeleteDialogClose={handleDeleteDialogClose}
+        handleDeleteDialog={handleDeleteDialog}
+      />
       {/*=== DELETE DIALOG ===*/}
 
       {/* UPDATE DIALOG */}
-      <Dialog
-        open={showUpdateDialog}
-        onClose={handleUpdateDialogClose}
-        maxWidth="xs"
-        fullWidth
-      >
-        <DialogTitle sx={{ fontWeight: "bold" }}>Edit Information</DialogTitle>
-
-        <DialogContent>
-          <Stack spacing={2} mt={1} alignItems="center">
-            <TextField
-              label="Rating Site "
-              name="rating"
-              fullWidth
-              value={inputUpdateDialog.rating}
-              onChange={(e) => {
-                setInputUpdateDialog({
-                  ...inputUpdateDialog,
-                  rating: e.target.value,
-                });
-              }}
-            />
-
-            <TextField
-              label="Entry Fee (USD)"
-              name="entryFee"
-              type="number"
-              fullWidth
-              value={inputUpdateDialog.entryFee}
-              onChange={(e) => {
-                setInputUpdateDialog({
-                  ...inputUpdateDialog,
-                  entryFee: e.target.value,
-                });
-              }}
-            />
-
-            <TextField
-              label="Opening Hours"
-              name="openHours"
-              fullWidth
-              value={inputUpdateDialog.openHours}
-              onChange={(e) => {
-                setInputUpdateDialog({
-                  ...inputUpdateDialog,
-                  openHours: e.target.value,
-                });
-              }}
-            />
-          </Stack>
-        </DialogContent>
-
-        <DialogActions>
-          <Button color="error" onClick={handleUpdateDialogClose}>
-            Cancel
-          </Button>
-          <Button variant="contained" onClick={handleUpdateDialog}>
-            Save Changes
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <UpdateDialog
+        showUpdateDialog={showUpdateDialog}
+        handleUpdateDialogClose={handleUpdateDialogClose}
+        handleUpdateDialog={handleUpdateDialog}
+        inputUpdateDialog={inputUpdateDialog}
+        setInputUpdateDialog={setInputUpdateDialog}
+        placeDetails={placeDetails}
+      />
       {/*=== UPDATE DIALOG ===*/}
     </div>
   );
