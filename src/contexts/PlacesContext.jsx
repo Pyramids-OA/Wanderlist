@@ -5,6 +5,7 @@ export const PlacesContext = createContext();
 
 export function PlacesProvider({ children }) {
   const [places, setPlaces] = useState([]);
+  const [categoryType, setCategoryType] = useState("all");
   let cancelAxios;
 
   useEffect(() => {
@@ -21,7 +22,7 @@ export function PlacesProvider({ children }) {
   }, []);
 
   return (
-    <PlacesContext.Provider value={{ places, setPlaces }}>
+    <PlacesContext.Provider value={{ places, setPlaces, categoryType, setCategoryType }}>
       {children}
     </PlacesContext.Provider>
   );
