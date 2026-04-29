@@ -2,15 +2,17 @@ import ExploreIcon from "@mui/icons-material/Explore";
 import WavingHandIcon from "@mui/icons-material/WavingHand";
 import { useContext } from "react";
 import { LoginInputContext } from "../../contexts/LoginFormInputContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const { userName } = useContext(LoginInputContext);
+  const navigate = useNavigate();
 
   return (
     <div className="flex items-center h-20 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500">
       <div className="flex flex-start items-center ml-6 text-blue-200 text-3xl">
         <ExploreIcon sx={{ fontSize: "40px" }} />
-        <h1> Wanderlist</h1>
+        <h1 onClick={() => navigate("/Home")}> Wanderlist</h1>
       </div>
       <div className="flex justify-end items-center ml-auto mr-6 text-blue-200 text-xl">
         <h1> Welcome {userName}</h1>
