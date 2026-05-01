@@ -1,14 +1,13 @@
 import LocationCard from "./LocationCard";
-import CategoryType from "./CategoryType";
+import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import Navbar from "./Navbar";
 import AddDialog from "./AddDialog";
 import { useState, useContext } from "react";
 import { PlacesContext } from "../../contexts/PlacesContext";
-
-//MUI
-import ControlPointIcon from "@mui/icons-material/ControlPoint";
+import SearchBar from "./SearchBar";
 
 export default function Home() {
+  const { darkMode, setDarkMode } = useContext(PlacesContext);
   const { places, setPlaces, categoryType } = useContext(PlacesContext);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [inputAddDialog, setInputAddDialog] = useState({
@@ -30,6 +29,30 @@ export default function Home() {
     setShowAddDialog(true);
   }
   function handelAddDialog() {
+    const {
+      name,
+      rating,
+      category,
+      openingHours,
+      entryFee,
+      description,
+      details,
+      image,
+      imageDetails,
+    } = inputAddDialog;
+    if (
+      !name ||
+      !rating ||
+      !category ||
+      !openingHours ||
+      !entryFee ||
+      !description ||
+      !details ||
+      !image ||
+      !imageDetails
+    ) {
+      return;
+    }
     setPlaces((prev) => [
       ...prev,
       {
@@ -40,8 +63,18 @@ export default function Home() {
 
     setShowAddDialog(false);
   }
+  function changeMode() {
+    setDarkMode(!darkMode);
+  }
+
   return (
-    <div className="bg-gradient-to-r from-blue-300 to-blue-400 h-auto pb-50">
+    <div
+      className={`h-auto pb-50 ${
+        darkMode
+          ? "bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600"
+          : "bg-gradient-to-r from-blue-300 to-blue-400"
+      }`}
+    >
       <div
         style={{
           position: "sticky",
@@ -50,10 +83,12 @@ export default function Home() {
           background: "linear-gradient(to right, #93c5fd, #60a5fa)",
         }}
       >
-        <Navbar />
+        <Navbar changeMode={changeMode} />
       </div>
 
-      <CategoryType />
+      {/* SEARCR BAR */}
+      <SearchBar openShowDialog={openShowDialog} />
+      {/*=== SEARCH BAR ===*/}
 
       <div className="grid grid-cols-4 gap-4 ml-8 mt-8">
         {places.map((place) => {

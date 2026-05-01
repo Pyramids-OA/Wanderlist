@@ -4,6 +4,8 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { PlacesContext } from "../../contexts/PlacesContext";
 
 export default function LocationCard({
   image,
@@ -14,6 +16,7 @@ export default function LocationCard({
   id,
 }) {
   const navigate = useNavigate();
+  const { darkMode } = useContext(PlacesContext);
 
   function handelRating(r) {
     if (Math.round(r) === 5) {
@@ -36,7 +39,7 @@ export default function LocationCard({
       sx={{
         maxWidth: 345,
         maxHeight: 1000,
-        background: "skyblue",
+        background: darkMode ? "#2196f3" : "skyblue",
         transition: "scale 0.3s",
         "&:hover": {
           scale: 1.05,

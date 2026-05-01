@@ -5,13 +5,17 @@ import TextField from "@mui/material/TextField";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
 
 export default function AddDialog({
   showAddDialog,
   handleAddDialogClose,
   inputAddDialog,
   setInputAddDialog,
-  handelAddDialog
+  handelAddDialog,
 }) {
   return (
     <>
@@ -23,7 +27,7 @@ export default function AddDialog({
         aria-describedby="alert-dialog-description"
         slotProps={{
           backdrop: {
-            sx: { backdropFilter: "blur(5px)" },
+            sx: { backdropFilter: "b  lur(5px)" },
           },
         }}
       >
@@ -32,6 +36,7 @@ export default function AddDialog({
           <Stack spacing={2} mt={1} alignItems="left">
             <div className="grid grid-cols-2 gap-3">
               <TextField
+                required
                 label="Name"
                 value={inputAddDialog.name}
                 onChange={(e) =>
@@ -42,6 +47,8 @@ export default function AddDialog({
                 }
               />
               <TextField
+                required
+                type="number"
                 label="Rating"
                 value={inputAddDialog.rating}
                 onChange={(e) =>
@@ -50,18 +57,33 @@ export default function AddDialog({
                     rating: e.target.value,
                   })
                 }
+                inputProps={{ min: 1, max: 5 }}
               />
+
+              <FormControl fullWidth>
+                <InputLabel id="category-label">Category</InputLabel>
+
+                <Select
+                  required
+                  labelId="category-label"
+                  id="category-select"
+                  value={inputAddDialog.category}
+                  label="Category"
+                  onChange={(e) => {
+                    setInputAddDialog({
+                      ...inputAddDialog,
+                      category: e.target.value,
+                    });
+                  }}
+                >
+                  <MenuItem value="Historical">Historical</MenuItem>
+                  <MenuItem value="Natural">Natural</MenuItem>
+                  <MenuItem value="Entertainment">Entertainment</MenuItem>
+                </Select>
+              </FormControl>
+
               <TextField
-                label="Category"
-                value={inputAddDialog.category}
-                onChange={(e) =>
-                  setInputAddDialog({
-                    ...inputAddDialog,
-                    category: e.target.value,
-                  })
-                }
-              />
-              <TextField
+                required
                 label="Opening Hours"
                 value={inputAddDialog.openingHours}
                 onChange={(e) =>
@@ -73,6 +95,7 @@ export default function AddDialog({
               />
             </div>
             <TextField
+              required
               label="Entry Fee"
               value={inputAddDialog.entryFee}
               onChange={(e) =>
@@ -83,6 +106,7 @@ export default function AddDialog({
               }
             />
             <TextField
+              required
               multiline
               maxRows={4}
               label="Description"
@@ -95,6 +119,7 @@ export default function AddDialog({
               }
             />
             <TextField
+              required
               multiline
               maxRows={4}
               label="Details"
@@ -107,6 +132,7 @@ export default function AddDialog({
               }
             />
             <TextField
+              required
               label="Image Link"
               value={inputAddDialog.image}
               onChange={(e) =>
@@ -117,6 +143,7 @@ export default function AddDialog({
               }
             />
             <TextField
+              required
               label="Image Details Link"
               value={inputAddDialog.imageDetails}
               onChange={(e) =>
@@ -137,7 +164,9 @@ export default function AddDialog({
           >
             Close
           </Button>
-          <Button variant="contained" onClick={handelAddDialog}>Save Changes</Button>
+          <Button variant="contained" onClick={handelAddDialog}>
+            Save Changes
+          </Button>
         </DialogActions>
       </Dialog>
     </>

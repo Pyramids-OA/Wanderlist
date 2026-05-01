@@ -6,6 +6,7 @@ export const PlacesContext = createContext();
 export function PlacesProvider({ children }) {
   const [places, setPlaces] = useState([]);
   const [categoryType, setCategoryType] = useState("all");
+  const [darkMode,setDarkMode] = useState(false);
   let cancelAxios;
 
   useEffect(() => {
@@ -20,9 +21,9 @@ export function PlacesProvider({ children }) {
       if (cancelAxios) cancelAxios();
     };
   }, []);
-
+[]
   return (
-    <PlacesContext.Provider value={{ places, setPlaces, categoryType, setCategoryType }}>
+    <PlacesContext.Provider value={{ places, setPlaces, categoryType, setCategoryType,darkMode,setDarkMode }}>
       {children}
     </PlacesContext.Provider>
   );
