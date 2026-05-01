@@ -4,7 +4,9 @@ import { PlacesContext } from "../../contexts/PlacesContext";
 import DeleteDialog from "./DeleteDialog";
 
 //MUI
-
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
@@ -17,12 +19,14 @@ import CardContent from "@mui/material/CardContent";
 import HourglassFullIcon from "@mui/icons-material/HourglassFull";
 import Typography from "@mui/material/Typography";
 import UpdateDialog from "./UpdateDialog";
+import { AltRouteRounded } from "@mui/icons-material";
 
 export default function CardDetails() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { places, setPlaces } = useContext(PlacesContext);
+  const [favorite, setFavorite] = useState(false);
+  const { places, setPlaces, darkMode } = useContext(PlacesContext);
   const placeDetails = places.find((p) => Number(p.id) === Number(id)) || {};
   const [inputUpdateDialog, setInputUpdateDialog] = useState({
     rating: placeDetails?.rating || "",
@@ -86,9 +90,17 @@ export default function CardDetails() {
     setShowDeleteDialog(false);
     navigate("/home");
   }
-
+  function handleFavorite() {
+    setFavorite(!favorite);
+  }
   return (
-    <div className="bg-gradient-to-r from-blue-400 to-blue-500 ">
+    <div
+      className={`h-auto pb-50 ${
+        darkMode
+          ? "bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600"
+          : "bg-gradient-to-r from-blue-300 to-blue-400"
+      }`}
+    >
       <Container maxWidth="md" height="">
         <Box
           sx={{
@@ -110,10 +122,20 @@ export default function CardDetails() {
                 <ArrowBackIcon sx={{ marginRight: 1 }} />
                 Back
               </Button>
+              
               <h1 className="ml-2 font-bold">{placeDetails?.name}</h1>
             </div>
 
             <div className="flex gap-2">
+              <div>
+                <IconButton aria-label="Favorite " value={favorite} onClick={handleFavorite} >
+                  {favorite ? (
+                    <FavoriteIcon className="text-red-600" />
+                  ) : (
+                    <FavoriteBorderIcon />
+                  )}
+                </IconButton>
+              </div>
               <Button variant="contained" onClick={openShowUpdateDialog}>
                 <EditIcon sx={{ marginRight: 1 }} />
                 Edit

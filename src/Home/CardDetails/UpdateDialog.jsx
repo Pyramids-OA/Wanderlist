@@ -44,6 +44,7 @@ export default function UpdateDialog({
       <DialogContent>
         <Stack spacing={2} mt={1} alignItems="center">
           <TextField
+            type="number"
             label="Rating Site"
             name="rating"
             fullWidth
@@ -54,6 +55,7 @@ export default function UpdateDialog({
                 rating: e.target.value,
               })
             }
+            inputProps={{ min: 1, max: 5 }}
           />
           <TextField
             label="Entry Fee (USD)"
