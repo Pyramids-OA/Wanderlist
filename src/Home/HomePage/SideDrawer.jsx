@@ -15,12 +15,20 @@ import PublicIcon from "@mui/icons-material/Public";
 import CastleIcon from "@mui/icons-material/Castle";
 import ParkIcon from "@mui/icons-material/Park";
 import TheaterComedyIcon from "@mui/icons-material/TheaterComedy";
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import SortByAlphaIcon from "@mui/icons-material/SortByAlpha";
+import HotelClassIcon from '@mui/icons-material/HotelClass';
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useContext } from "react";
 import { PlacesContext } from "../../contexts/PlacesContext";
 
 export default function SideDrawer({ open, toggleDrawer }) {
-  const { categoryType, setCategoryType } = useContext(PlacesContext);
+  const {
+    categoryType,
+    setCategoryType,
+    setDisplayLocation,
+    setRating,
+    rating,
+  } = useContext(PlacesContext);
 
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
@@ -36,9 +44,10 @@ export default function SideDrawer({ open, toggleDrawer }) {
               (text) => (
                 <MenuItem
                   key={text}
-                  onClick={() =>
-                    setCategoryType(text === "All Places" ? "all" : text)
-                  }
+                  onClick={() => {
+                    setCategoryType(text === "All Places" ? "all" : text);
+                    setDisplayLocation("Category");
+                  }}
                 >
                   <ListItemIcon>
                     {text === "All Places" && (
@@ -95,15 +104,67 @@ export default function SideDrawer({ open, toggleDrawer }) {
       <List>
         <FormControl sx={{ width: "90%", ml: 1.5 }}>
           <InputLabel>Rating</InputLabel>
-          <Select label="Rating">
-            <MenuItem value="5">⭐⭐⭐⭐⭐</MenuItem>
-            <MenuItem value="4">⭐⭐⭐⭐</MenuItem>
-            <MenuItem value="3">⭐⭐⭐</MenuItem>
-            <MenuItem value="2">⭐⭐</MenuItem>
-            <MenuItem value="1">⭐</MenuItem>
+          <Select value={rating} label="Rating">
+            {[5, 4, 3, 2, 1].map((num) => (
+              <MenuItem
+                key={num}
+                onClick={() => {
+                  setRating(num);
+                  setDisplayLocation("Rating");
+                }}
+              >
+                {"⭐".repeat(num)}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </List>
+      <Divider sx={{ marginTop: 5 }} />
+
+      <MenuItem
+        sx={{
+          marginTop: 10,
+          display: "flex",
+          alignItems: "center",
+          gap: 1,
+          borderRadius: "10px",
+          margin: "7px",
+          fontWeight: "bold",
+          backgroundColor: "rgba(255,255,255,0.6)",
+          backdropFilter: "blur(10px)",
+          transition: "0.3s",
+          "&:hover": {
+            backgroundColor: "rgba(6, 184, 0, 0.1)",
+            transform: "translateX(5px)",
+          },
+        }}
+      >
+        <SortByAlphaIcon sx={{ color: "#077404" }} />
+        Sort From A to Z
+      </MenuItem>
+      <div className="my-8">
+        <Divider />
+        <MenuItem
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            borderRadius: "10px",
+            margin: "7px",
+            fontWeight: "bold",
+            backgroundColor: "rgba(255,255,255,0.6)",
+            backdropFilter: "blur(10px)",
+            transition: "0.3s",
+            "&:hover": {
+              backgroundColor: "rgba(255, 255, 0, 0.2)",
+              transform: "translateX(5px)",
+            },
+          }}
+        >
+          <HotelClassIcon sx={{ color: "#eece02" }} />
+          Sort by rating
+        </MenuItem>
+      </div>
       <Divider />
       <MenuItem
         sx={{

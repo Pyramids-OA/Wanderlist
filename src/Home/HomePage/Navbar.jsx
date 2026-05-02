@@ -41,7 +41,13 @@ export default function Navbar({ changeMode }) {
       <div className="flex justify-end items-center ml-auto mr-6 text-blue-200 text-xl">
         <Stack direction="row" spacing={1}>
           <IconButton aria-label="Favorite">
-            <FavoriteBorderIcon className="text-red-600" />
+            <FavoriteBorderIcon
+              className="text-red-600"
+              sx={{
+                transition: "0.3s",
+                "&:hover": { transform: "scale(1.2)" },
+              }}
+            />
           </IconButton>
           <IconButton
             aria-label="DarkMode"
@@ -49,13 +55,31 @@ export default function Navbar({ changeMode }) {
             onClick={changeMode}
           >
             {darkMode ? (
-              <SunnyIcon className="text-yellow-400" />
+              <SunnyIcon
+                className="text-yellow-400"
+                sx={{
+                  transition: "0.3s",
+                  "&:hover": { transform: "scale(1.2)" },
+                }}
+              />
             ) : (
-              <DarkModeIcon className="text-black" />
+              <DarkModeIcon
+                className="text-black"
+                sx={{
+                  transition: "0.3s",
+                  "&:hover": { transform: "scale(1.2)" },
+                }}
+              />
             )}
           </IconButton>
           <IconButton aria-label="SideMenu" onClick={toggleDrawer(true)}>
-            <MenuIcon className="text-white" />
+            <MenuIcon
+              className="text-white"
+              sx={{
+                transition: "0.3s",
+                "&:hover": { transform: "scale(1.2)" },
+              }}
+            />
           </IconButton>
         </Stack>
       </div>
