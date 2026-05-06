@@ -8,6 +8,7 @@ export function PlacesProvider({ children }) {
   const [categoryType, setCategoryType] = useState("all");
   const [displayLocation, setDisplayLocation] = useState("all");
   const [rating, setRating] = useState(0);
+  const [categoryFillter, setCategoryFillter] = useState("CategoryFillter");
   const [darkMode, setDarkMode] = useState(false);
   let cancelAxios;
 
@@ -37,6 +38,8 @@ export function PlacesProvider({ children }) {
         setDisplayLocation,
         rating,
         setRating,
+        categoryFillter,
+        setCategoryFillter,
       }}
     >
       {children}

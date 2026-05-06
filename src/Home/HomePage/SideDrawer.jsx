@@ -16,7 +16,7 @@ import CastleIcon from "@mui/icons-material/Castle";
 import ParkIcon from "@mui/icons-material/Park";
 import TheaterComedyIcon from "@mui/icons-material/TheaterComedy";
 import SortByAlphaIcon from "@mui/icons-material/SortByAlpha";
-import HotelClassIcon from '@mui/icons-material/HotelClass';
+import HotelClassIcon from "@mui/icons-material/HotelClass";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useContext } from "react";
 import { PlacesContext } from "../../contexts/PlacesContext";
@@ -28,6 +28,7 @@ export default function SideDrawer({ open, toggleDrawer }) {
     setDisplayLocation,
     setRating,
     rating,
+    setCategoryFillter,
   } = useContext(PlacesContext);
 
   const DrawerList = (
@@ -47,6 +48,7 @@ export default function SideDrawer({ open, toggleDrawer }) {
                   onClick={() => {
                     setCategoryType(text === "All Places" ? "all" : text);
                     setDisplayLocation("Category");
+                    setCategoryFillter("CategoryFillter");
                   }}
                 >
                   <ListItemIcon>
@@ -111,6 +113,7 @@ export default function SideDrawer({ open, toggleDrawer }) {
                 onClick={() => {
                   setRating(num);
                   setDisplayLocation("Rating");
+                  setCategoryFillter("CategoryFillter");
                 }}
               >
                 {"⭐".repeat(num)}
@@ -122,6 +125,9 @@ export default function SideDrawer({ open, toggleDrawer }) {
       <Divider sx={{ marginTop: 5 }} />
 
       <MenuItem
+        onClick={() => {
+          setCategoryFillter("SortFillter");
+        }}
         sx={{
           marginTop: 10,
           display: "flex",
@@ -145,6 +151,9 @@ export default function SideDrawer({ open, toggleDrawer }) {
       <div className="my-8">
         <Divider />
         <MenuItem
+          onClick={() => {
+            setCategoryFillter("SortRating");
+          }}
           sx={{
             display: "flex",
             alignItems: "center",

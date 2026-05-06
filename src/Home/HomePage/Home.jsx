@@ -8,11 +8,18 @@ import SearchBar from "./SearchBar";
 
 export default function Home() {
   const { darkMode, setDarkMode } = useContext(PlacesContext);
-  const { places, setPlaces, categoryType, displayLocation, rating } =
-    useContext(PlacesContext);
+  const {
+    places,
+    setPlaces,
+    categoryType,
+    displayLocation,
+    rating,
+    categoryFillter,
+  } = useContext(PlacesContext);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [locationName, setLocationName] = useState("");
   let count = 0;
+  let sortedOfPlaces = [...places];
   const [inputAddDialog, setInputAddDialog] = useState({
     name: "",
     rating: "",
@@ -97,94 +104,128 @@ export default function Home() {
       {/*=== SEARCH BAR ===*/}
 
       <div className="grid grid-cols-4 gap-4 ml-8 mt-8">
-        {places.map((place) => {
-          if (displayLocation === "all") {
-            count++;
-            return (
-              <LocationCard
-                key={place.id}
-                id={place.id}
-                name={place.name}
-                desc={place.description}
-                image={place.image}
-                rating={place.rating}
-                category={place.category}
-              />
-            );
-          } else if (displayLocation === "Category") {
-            if (place.category === categoryType) {
-              count++;
-              return (
-                <LocationCard
-                  key={place.id}
-                  id={place.id}
-                  name={place.name}
-                  desc={place.description}
-                  image={place.image}
-                  rating={place.rating}
-                  category={place.category}
-                />
-              );
-            } else if (categoryType === "all") {
-              count++;
-              return (
-                <LocationCard
-                  key={place.id}
-                  id={place.id}
-                  name={place.name}
-                  desc={place.description}
-                  image={place.image}
-                  rating={place.rating}
-                  category={place.category}
-                />
-              );
-            }
-          }
-          if (displayLocation === "Rating") {
-            if (Math.round(place.rating) === rating) {
-              count++;
-              return (
-                <LocationCard
-                  key={place.id}
-                  id={place.id}
-                  name={place.name}
-                  desc={place.description}
-                  image={place.image}
-                  rating={place.rating}
-                  category={place.category}
-                />
-              );
-            }
-          }
-          if (displayLocation === "Search") {
-            if (place.name.toLowerCase().includes(locationName.toLowerCase())) {
-              count++;
-              return (
-                <LocationCard
-                  key={place.id}
-                  id={place.id}
-                  name={place.name}
-                  desc={place.description}
-                  image={place.image}
-                  rating={place.rating}
-                  category={place.category}
-                />
-              );
-            }
-          }
-        })}
+        {categoryFillter === "CategoryFillter"
+          ? places.map((place) => {
+              if (displayLocation === "all") {
+                count++;
+                return (
+                  <LocationCard
+                    key={place.id}
+                    id={place.id}
+                    name={place.name}
+                    desc={place.description}
+                    image={place.image}
+                    rating={place.rating}
+                    category={place.category}
+                  />
+                );
+              } else if (displayLocation === "Category") {
+                if (place.category === categoryType || categoryType === "all") {
+                  count++;
+                  return (
+                    <LocationCard
+                      key={place.id}
+                      id={place.id}
+                      name={place.name}
+                      desc={place.description}
+                      image={place.image}
+                      rating={place.rating}
+                      category={place.category}
+                    />
+                  );
+                }
+              }
+
+              if (displayLocation === "Rating") {
+                if (Math.round(place.rating) === rating) {
+                  count++;
+                  return (
+                    <LocationCard
+                      key={place.id}
+                      id={place.id}
+                      name={place.name}
+                      desc={place.description}
+                      image={place.image}
+                      rating={place.rating}
+                      category={place.category}
+                    />
+                  );
+                }
+              }
+
+              if (displayLocation === "Search") {
+                if (
+                  place.name.toLowerCase().includes(locationName.toLowerCase())
+                ) {
+                  count++;
+                  return (
+                    <LocationCard
+                      key={place.id}
+                      id={place.id}
+                      name={place.name}
+                      desc={place.description}
+                      image={place.image}
+                      rating={place.rating}
+                      category={place.category}
+                    />
+                  );
+                }
+              }
+            })
+          : ""}
+
+        {categoryFillter === "SortFillter"
+          ? sortedOfPlaces
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map((place) => {
+                count++;
+                return (
+                  <LocationCard
+                    key={place.id}
+                    id={place.id}
+                    name={place.name}
+                    desc={place.description}
+                    image={place.image}
+                    rating={place.rating}
+                    category={place.category}
+                  />
+                );
+              })
+          : ""}
+        {categoryFillter === "SortRating"
+          ? sortedOfPlaces
+              .sort((a, b) => b.rating - a.rating)
+              .map((place) => {
+                count++;
+                return (
+                  <LocationCard
+                    key={place.id}
+                    id={place.id}
+                    name={place.name}
+                    desc={place.description}
+                    image={place.image}
+                    rating={place.rating}
+                    category={place.category}
+                  />
+                );
+              })
+          : ""}
       </div>
       <div className="flex flex-col justify-center items-center my-20 ">
-        {count === 0 && (
-          <>
-            <h1 className="text-3xl font-bold text-red-700 mb-10">
-              There are none any Location
-            </h1>
-            <h3 className="text-xl font-bold text-blue-700">
-              Do you want add new One ?
-            </h3>
-          </>
-        )}
+        {(() => {
+          if (count === 0) {
+            return (
+              <>
+                <h1 className="text-3xl font-bold text-red-700 mb-10">
+                  There are none any Location
+                </h1>
+                <h3 className="text-xl font-bold text-blue-700">
+                  Do you want add new One ?
+                </h3>
+              </>
+            );
+          }
+        })()}
       </div>
       <div className="flex justify-center items-center mt-20">
         <button
