@@ -176,6 +176,9 @@ export default function SideDrawer({ open, toggleDrawer }) {
       </div>
       <Divider />
       <MenuItem
+        onClick={() => {
+          setDisplayLocation("Favorites");
+        }}
         sx={{
           display: "flex",
           alignItems: "center",

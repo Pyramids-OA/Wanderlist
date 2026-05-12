@@ -10,6 +10,8 @@ export function PlacesProvider({ children }) {
   const [rating, setRating] = useState(0);
   const [categoryFillter, setCategoryFillter] = useState("CategoryFillter");
   const [darkMode, setDarkMode] = useState(false);
+  const [favorite, setFavorite] = useState(false);
+  const [favorites, setFavorites] = useState([]);
   let cancelAxios;
 
   useEffect(() => {
@@ -40,6 +42,10 @@ export function PlacesProvider({ children }) {
         setRating,
         categoryFillter,
         setCategoryFillter,
+        favorite,
+        setFavorite,
+        favorites,
+        setFavorites,
       }}
     >
       {children}

@@ -25,8 +25,9 @@ export default function CardDetails() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [favorite, setFavorite] = useState(false);
-  const { places, setPlaces, darkMode } = useContext(PlacesContext);
+  const { places, setPlaces, darkMode, favorites, setFavorites } =
+    useContext(PlacesContext);
+
   const placeDetails = places.find((p) => Number(p.id) === Number(id)) || {};
   const [inputUpdateDialog, setInputUpdateDialog] = useState({
     rating: placeDetails?.rating || "",
@@ -91,7 +92,9 @@ export default function CardDetails() {
     navigate("/home");
   }
   function handleFavorite() {
-    setFavorite(!favorite);
+    setFavorites((prev) =>
+      prev.includes(id) ? prev.filter((favId) => favId !== id) : [...prev, id],
+    );
   }
   return (
     <div
@@ -122,20 +125,39 @@ export default function CardDetails() {
                 <ArrowBackIcon sx={{ marginRight: 1 }} />
                 Back
               </Button>
-              
+
               <h1 className="ml-2 font-bold">{placeDetails?.name}</h1>
             </div>
 
             <div className="flex gap-2">
-              <div>
-                <IconButton aria-label="Favorite " value={favorite} onClick={handleFavorite} >
-                  {favorite ? (
-                    <FavoriteIcon className="text-red-600" />
-                  ) : (
-                    <FavoriteBorderIcon />
-                  )}
-                </IconButton>
-              </div>
+              <button
+                onClick={handleFavorite}
+                aria-label="favorite"
+                className="p-2 rounded-full bg-transparent
+             transition duration-200
+             hover:bg-gray-200/20
+             hover:scale-105
+             active:bg-gray-300/50
+             active:scale-95"
+              >
+                {(() => {
+                  if (favorites.includes(id)) {
+                    return (
+                      <FavoriteIcon
+                        className="text-red-600"
+                        sx={{ fontSize: 27 }}
+                      />
+                    );
+                  } else {
+                    return (
+                      <FavoriteBorderIcon
+                        className="text-gray-600/80"
+                        sx={{ fontSize: 27 }}
+                      />
+                    );
+                  }
+                })()}
+              </button>
               <Button variant="contained" onClick={openShowUpdateDialog}>
                 <EditIcon sx={{ marginRight: 1 }} />
                 Edit

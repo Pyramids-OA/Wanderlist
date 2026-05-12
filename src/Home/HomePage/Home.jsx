@@ -7,7 +7,7 @@ import { PlacesContext } from "../../contexts/PlacesContext";
 import SearchBar from "./SearchBar";
 
 export default function Home() {
-  const { darkMode, setDarkMode } = useContext(PlacesContext);
+  const { darkMode, setDarkMode, favorites } = useContext(PlacesContext);
   const {
     places,
     setPlaces,
@@ -157,6 +157,23 @@ export default function Home() {
                 if (
                   place.name.toLowerCase().includes(locationName.toLowerCase())
                 ) {
+                  count++;
+                  return (
+                    <LocationCard
+                      key={place.id}
+                      id={place.id}
+                      name={place.name}
+                      desc={place.description}
+                      image={place.image}
+                      rating={place.rating}
+                      category={place.category}
+                    />
+                  );
+                }
+              }
+
+              if (displayLocation === "Favorites") {
+                if (favorites.includes(place.id.toString())) {
                   count++;
                   return (
                     <LocationCard
