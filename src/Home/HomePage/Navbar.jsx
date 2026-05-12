@@ -1,7 +1,7 @@
 import ExploreIcon from "@mui/icons-material/Explore";
 import WavingHandIcon from "@mui/icons-material/WavingHand";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import MenuIcon from "@mui/icons-material/Menu";
+import TuneIcon from "@mui/icons-material/Tune";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import SunnyIcon from "@mui/icons-material/Sunny";
 
@@ -9,7 +9,6 @@ import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { LoginInputContext } from "../../contexts/LoginFormInputContext";
 import { PlacesContext } from "../../contexts/PlacesContext";
@@ -17,9 +16,8 @@ import { PlacesContext } from "../../contexts/PlacesContext";
 import SideDrawer from "./SideDrawer";
 
 export default function Navbar({ changeMode }) {
-  const { darkMode } = useContext(PlacesContext);
+  const { darkMode, favorites, setDisplayLocation } = useContext(PlacesContext);
   const { userName } = useContext(LoginInputContext);
-  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -29,8 +27,10 @@ export default function Navbar({ changeMode }) {
     <div className="flex items-center h-20 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500">
       <div className="flex flex-start items-center ml-6 text-blue-200 text-3xl">
         <ExploreIcon sx={{ fontSize: "40px" }} />
-        <h1 onClick={() => navigate("/Home")} className="font-bold">
-          {" "}
+        <h1
+          onClick={() => (window.location.href = "/Home")}
+          className="font-bold cursor-pointer"
+        >
           Wanderlist
         </h1>
       </div>
@@ -40,14 +40,43 @@ export default function Navbar({ changeMode }) {
       </div>
       <div className="flex justify-end items-center ml-auto mr-6 text-blue-200 text-xl">
         <Stack direction="row" spacing={1}>
-          <IconButton aria-label="Favorite">
+          <IconButton
+            aria-label="Favorite"
+            sx={{ position: "relative" }}
+            onClick={() => {
+              setDisplayLocation("Favorites");
+            }}
+          >
             <FavoriteBorderIcon
-              className="text-red-600"
+              className={
+                favorites.length > 0 ? "text-red-500" : "text-blue-200"
+              }
               sx={{
                 transition: "0.3s",
                 "&:hover": { transform: "scale(1.2)" },
               }}
             />
+            {favorites.length > 0 && (
+              <span
+                style={{
+                  position: "absolute",
+                  top: 2,
+                  right: 2,
+                  background: "#ef4444",
+                  color: "white",
+                  borderRadius: "50%",
+                  width: 16,
+                  height: 16,
+                  fontSize: 10,
+                  fontWeight: "bold",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {favorites.length}
+              </span>
+            )}
           </IconButton>
           <IconButton
             aria-label="DarkMode"
@@ -73,7 +102,7 @@ export default function Navbar({ changeMode }) {
             )}
           </IconButton>
           <IconButton aria-label="SideMenu" onClick={toggleDrawer(true)}>
-            <MenuIcon
+            <TuneIcon
               className="text-white"
               sx={{
                 transition: "0.3s",
