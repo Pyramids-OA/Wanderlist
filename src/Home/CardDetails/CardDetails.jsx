@@ -19,7 +19,8 @@ import CardContent from "@mui/material/CardContent";
 import HourglassFullIcon from "@mui/icons-material/HourglassFull";
 import Typography from "@mui/material/Typography";
 import UpdateDialog from "./UpdateDialog";
-import { AltRouteRounded } from "@mui/icons-material";
+import { AltRouteRounded, Message } from "@mui/icons-material";
+
 
 export default function CardDetails() {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ export default function CardDetails() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showUpdateDialog, setShowUpdateDialog] = useState(false);
 
+
   function handelRating(r) {
     if (Math.round(r) === 5) {
       return "🌟🌟🌟🌟🌟";
@@ -54,6 +56,8 @@ export default function CardDetails() {
     }
   }
   // FUNCTION UPDATE
+
+  
   function openShowUpdateDialog() {
     setShowUpdateDialog(true);
   }
@@ -97,13 +101,7 @@ export default function CardDetails() {
     );
   }
   return (
-    <div
-      className={`h-auto pb-50 ${
-        darkMode
-          ? "bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600"
-          : "bg-gray-200"
-      }`}
-    >
+    <div className={`h-auto pb-50 ${darkMode ? "bg-gray-800" : "bg-gray-400"}`}>
       <Container maxWidth="md" height="">
         <Box
           sx={{
@@ -111,8 +109,11 @@ export default function CardDetails() {
             p: 2,
             borderRadius: "30px",
             paddingBottom: 8,
+            background: darkMode
+              ? "oklch(70.7% 0.022 261.325)"
+              : "oklch(92.8% 0.006 264.531)",
           }}
-          className=" bg-indigo-200 backdrop-blur-xl"
+          className=" backdrop-blur-xl"
         >
           <div className="mt-1 flex justify-between items-center ">
             <div className="flex items-center">
@@ -234,6 +235,7 @@ export default function CardDetails() {
         placeDetails={placeDetails}
       />
       {/*=== UPDATE DIALOG ===*/}
+
     </div>
   );
 }
