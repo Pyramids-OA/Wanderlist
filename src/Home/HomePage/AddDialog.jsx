@@ -9,6 +9,42 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { useState } from "react";
+
+function ImageUploadField({ label, field, inputId, fileName, onFileChange }) {
+  return (
+    <FormControl fullWidth required variant="outlined">
+      <OutlinedInput
+        readOnly
+        value={fileName || ""}
+        placeholder={label}
+        onClick={() => document.getElementById(inputId)?.click()}
+        sx={{ cursor: "pointer" }}
+        endAdornment={
+          <InputAdornment position="end">
+            <IconButton
+              edge="end"
+              onClick={() => document.getElementById(inputId)?.click()}
+            >
+              <CloudUploadIcon />
+            </IconButton>
+          </InputAdornment>
+        }
+      />
+      <input
+        id={inputId}
+        type="file"
+        accept="image/*"
+        hidden
+        onChange={(e) => onFileChange(e, field)}
+      />
+    </FormControl>
+  );
+}
 
 export default function AddDialog({
   showAddDialog,
@@ -17,6 +53,22 @@ export default function AddDialog({
   setInputAddDialog,
   handelAddDialog,
 }) {
+  const [fileNames, setFileNames] = useState({});
+
+  function handleImageFileChange(e, field) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setFileNames((prev) => ({ ...prev, [field]: file.name }));
+    const reader = new FileReader();
+    reader.onload = () => {
+      setInputAddDialog({
+        ...inputAddDialog,
+        [field]: reader.result,
+      });
+    };
+    reader.readAsDataURL(file);
+  }
+
   return (
     <>
       <Dialog
@@ -131,27 +183,19 @@ export default function AddDialog({
                 })
               }
             />
-            <TextField
-              required
-              label="Image Link"
-              value={inputAddDialog.image}
-              onChange={(e) =>
-                setInputAddDialog({
-                  ...inputAddDialog,
-                  image: e.target.value,
-                })
-              }
+            <ImageUploadField
+              label="Image"
+              field="image"
+              inputId="image-upload-input"
+              fileName={fileNames.image}
+              onFileChange={handleImageFileChange}
             />
-            <TextField
-              required
-              label="Image Details Link"
-              value={inputAddDialog.imageDetails}
-              onChange={(e) =>
-                setInputAddDialog({
-                  ...inputAddDialog,
-                  imageDetails: e.target.value,
-                })
-              }
+            <ImageUploadField
+              label="Image Details"
+              field="imageDetails"
+              inputId="imageDetails-upload-input"
+              fileName={fileNames.imageDetails}
+              onFileChange={handleImageFileChange}
             />
           </Stack>
         </DialogContent>
