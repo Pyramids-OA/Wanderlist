@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { PlacesContext } from "../../contexts/PlacesContext";
 
 export default function SearchBar({ locationName, setLocationName }) {
-  const { setDisplayLocation } = useContext(PlacesContext);
+  const { setDisplayLocation, darkMode } = useContext(PlacesContext);
   return (
     <div className="flex justify-center items-center gap-4 max-w-3xl mx-auto mt-6">
       <TextField
@@ -14,16 +14,19 @@ export default function SearchBar({ locationName, setLocationName }) {
         value={locationName}
         fullWidth
         InputProps={{
-          startAdornment: <SearchIcon sx={{ mr: 1, color: "#888" }} />,
+          startAdornment: <SearchIcon sx={{ mr: 1, color:darkMode?"": "#888",  }}  />,
         }}
         sx={{
           "& .MuiOutlinedInput-root": {
             borderRadius: "12px",
-            backgroundColor: "#f5f7ff",
+            color:darkMode?"white":"",
+            backgroundColor: darkMode
+              ? "oklch(55.4% 0.046 257.417)"
+              : "oklch(92.8% 0.006 264.531)",
           },
         }}
         onChange={(e) => {
-          setDisplayLocation("Search")
+          setDisplayLocation("Search");
           setLocationName(e.target.value);
         }}
       />

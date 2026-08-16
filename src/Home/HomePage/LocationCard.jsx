@@ -39,7 +39,9 @@ export default function LocationCard({
       sx={{
         maxWidth: 345,
         maxHeight: 1000,
-        background: darkMode ? "#2196f3" : "oklch(96.7% 0.003 264.542)",
+        background: darkMode
+          ? "oklch(37.3% 0.034 259.733)"
+          : "oklch(96.7% 0.003 264.542)",
         transition: "scale 0.3s",
         "&:hover": {
           scale: 1.05,
@@ -59,10 +61,16 @@ export default function LocationCard({
         />
       </CardActionArea>
       <CardContent sx={{}}>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography
+          gutterBottom
+          variant="h5"
+          component="div"
+          style={{ color: darkMode ? "oklch(92.8% 0.006 264.531)" : "" }}
+        >
           {name}
         </Typography>
         <Typography
+        style={{ color: darkMode ? "oklch(92.8% 0.006 264.531)" : "" }}
           gutterBottom
           variant="h7"
           component="div"
@@ -70,10 +78,16 @@ export default function LocationCard({
         >
           {category}
         </Typography>
-        <Typography gutterBottom variant="h6" component="div">
+        <Typography
+          gutterBottom
+          variant="h6"
+          component="div"
+          style={{ color: darkMode ? "oklch(92.8% 0.006 264.531)" : "" }}
+        >
           {handelRating(rating)}
         </Typography>
         <Typography
+          style={{ color: darkMode ? "oklch(92.8% 0.006 264.531)" : "" }}
           variant="body2"
           sx={{
             color: "text.secondary",

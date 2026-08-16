@@ -24,7 +24,14 @@ export default function Navbar({ changeMode }) {
   };
 
   return (
-    <div className="flex items-center h-20 bg-slate-600">
+    <div
+      className="flex items-center h-20 "
+      style={{
+        background: darkMode
+          ? "oklch(37.3% 0.034 259.733)"
+          : "oklch(44.6% 0.043 257.281)",
+      }}
+    >
       <div className="flex flex-start items-center ml-6 text-indigo-200 text-3xl">
         <ExploreIcon sx={{ fontSize: "40px" }} />
         <h1
