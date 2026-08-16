@@ -37,8 +37,8 @@ export default function LocationCard({
   return (
     <Card
       sx={{
-        maxWidth: 345,
-        maxHeight: 1000,
+        maxWidth: 420,
+        width: "100%",
         background: darkMode
           ? "oklch(37.3% 0.034 259.733)"
           : "oklch(96.7% 0.003 264.542)",
@@ -55,12 +55,12 @@ export default function LocationCard({
       >
         <CardMedia
           component="img"
-          height="100"
+          height="190"
           image={image}
           alt="green iguana"
         />
       </CardActionArea>
-      <CardContent sx={{}}>
+      <CardContent sx={{ p: 2 }}>
         <Typography
           gutterBottom
           variant="h5"
@@ -70,7 +70,7 @@ export default function LocationCard({
           {name}
         </Typography>
         <Typography
-        style={{ color: darkMode ? "oklch(92.8% 0.006 264.531)" : "" }}
+          style={{ color: darkMode ? "oklch(92.8% 0.006 264.531)" : "" }}
           gutterBottom
           variant="h7"
           component="div"

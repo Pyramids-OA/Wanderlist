@@ -2,7 +2,8 @@ import LocationCard from "./LocationCard";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import Navbar from "./Navbar";
 import AddDialog from "./AddDialog";
-import { useState, useContext } from "react";
+import Pagination from "@mui/material/Pagination";
+import { useState, useContext, useEffect } from "react";
 import { PlacesContext } from "../../contexts/PlacesContext";
 import SearchBar from "./SearchBar";
 import { useSnackbar } from "../../contexts/SnackbarContext";
@@ -20,8 +21,8 @@ export default function Home() {
   } = useContext(PlacesContext);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [locationName, setLocationName] = useState("");
-  let count = 0;
-  let sortedOfPlaces = [...places];
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
   const [inputAddDialog, setInputAddDialog] = useState({
     name: "",
     rating: "",
@@ -33,6 +34,43 @@ export default function Home() {
     image: "",
     imageDetails: "",
   });
+
+  let filteredPlaces = [];
+
+  if (categoryFillter === "CategoryFillter") {
+    filteredPlaces = places.filter((place) => {
+      if (displayLocation === "all") return true;
+      if (displayLocation === "Category") {
+        return place.category === categoryType || categoryType === "all";
+      }
+      if (displayLocation === "Rating") {
+        return Math.round(place.rating) === rating;
+      }
+      if (displayLocation === "Search") {
+        return place.name.toLowerCase().includes(locationName.toLowerCase());
+      }
+      if (displayLocation === "Favorites") {
+        return favorites.includes(place.id.toString());
+      }
+      return false;
+    });
+  } else if (categoryFillter === "SortFillter") {
+    filteredPlaces = [...places].sort((a, b) => a.name.localeCompare(b.name));
+  } else if (categoryFillter === "SortRating") {
+    filteredPlaces = [...places].sort((a, b) => b.rating - a.rating);
+  }
+
+  // PAGINATION: بنقص الجزء يلي يخص الصفحة الحالية بس
+  const totalPages = Math.ceil(filteredPlaces.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedPlaces = filteredPlaces.slice(
+    startIndex,
+    startIndex + itemsPerPage,
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [categoryFillter, categoryType, displayLocation, rating, locationName]);
 
   function handleAddDialogClose() {
     setShowAddDialog(false);
@@ -100,134 +138,44 @@ export default function Home() {
       />
       {/*=== SEARCH BAR ===*/}
 
-      <div className="grid grid-cols-4 gap-4 ml-8 mt-8">
-        {categoryFillter === "CategoryFillter"
-          ? places.map((place) => {
-              if (displayLocation === "all") {
-                count++;
-                return (
-                  <LocationCard
-                    key={place.id}
-                    id={place.id}
-                    name={place.name}
-                    desc={place.description}
-                    image={place.image}
-                    rating={place.rating}
-                    category={place.category}
-                  />
-                );
-              } else if (displayLocation === "Category") {
-                if (place.category === categoryType || categoryType === "all") {
-                  count++;
-                  return (
-                    <LocationCard
-                      key={place.id}
-                      id={place.id}
-                      name={place.name}
-                      desc={place.description}
-                      image={place.image}
-                      rating={place.rating}
-                      category={place.category}
-                    />
-                  );
-                }
-              }
-
-              if (displayLocation === "Rating") {
-                if (Math.round(place.rating) === rating) {
-                  count++;
-                  return (
-                    <LocationCard
-                      key={place.id}
-                      id={place.id}
-                      name={place.name}
-                      desc={place.description}
-                      image={place.image}
-                      rating={place.rating}
-                      category={place.category}
-                    />
-                  );
-                }
-              }
-
-              if (displayLocation === "Search") {
-                if (
-                  place.name.toLowerCase().includes(locationName.toLowerCase())
-                ) {
-                  count++;
-                  return (
-                    <LocationCard
-                      key={place.id}
-                      id={place.id}
-                      name={place.name}
-                      desc={place.description}
-                      image={place.image}
-                      rating={place.rating}
-                      category={place.category}
-                    />
-                  );
-                }
-              }
-
-              if (displayLocation === "Favorites") {
-                if (favorites.includes(place.id.toString())) {
-                  count++;
-                  return (
-                    <LocationCard
-                      key={place.id}
-                      id={place.id}
-                      name={place.name}
-                      desc={place.description}
-                      image={place.image}
-                      rating={place.rating}
-                      category={place.category}
-                    />
-                  );
-                }
-              }
-            })
-          : ""}
-
-        {categoryFillter === "SortFillter"
-          ? sortedOfPlaces
-              .sort((a, b) => a.name.localeCompare(b.name))
-              .map((place) => {
-                count++;
-                return (
-                  <LocationCard
-                    key={place.id}
-                    id={place.id}
-                    name={place.name}
-                    desc={place.description}
-                    image={place.image}
-                    rating={place.rating}
-                    category={place.category}
-                  />
-                );
-              })
-          : ""}
-        {categoryFillter === "SortRating"
-          ? sortedOfPlaces
-              .sort((a, b) => b.rating - a.rating)
-              .map((place) => {
-                count++;
-                return (
-                  <LocationCard
-                    key={place.id}
-                    id={place.id}
-                    name={place.name}
-                    desc={place.description}
-                    image={place.image}
-                    rating={place.rating}
-                    category={place.category}
-                  />
-                );
-              })
-          : ""}
+      <div className="grid grid-cols-3 gap-3 px-8 mt-8">
+        {paginatedPlaces.map((place) => (
+          <LocationCard
+            key={place.id}
+            id={place.id}
+            name={place.name}
+            desc={place.description}
+            image={place.image}
+            rating={place.rating}
+            category={place.category}
+          />
+        ))}
       </div>
+
+      {totalPages > 1 && (
+        <div className="flex justify-center my-8 ">
+          <Pagination
+            count={totalPages}
+            page={currentPage}
+            onChange={(e, page) => setCurrentPage(page)}
+            sx={{
+              background: darkMode
+                ? "oklch(92.8% 0.006 264.531)"
+                : "oklch(44.6% 0.043 257.281)",
+              borderRadius: "9999px",
+              px: 2,
+              py: 0.5,
+              boxShadow: darkMode
+                ? "0 2px 8px rgba(0,0,0,0.4)"
+                : "0 2px 8px rgba(0,0,0,0.15)",
+            }}
+          />
+        </div>
+      )}
+
       <div className="flex flex-col justify-center items-center my-20 ">
         {(() => {
-          if (count === 0) {
+          if (filteredPlaces.length === 0) {
             return (
               <>
                 <h1 className="text-3xl font-bold text-red-700 mb-10">
