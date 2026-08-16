@@ -39,7 +39,7 @@ export default function LocationCard({
       sx={{
         maxWidth: 345,
         maxHeight: 1000,
-        background: darkMode ? "#2196f3" : "skyblue",
+        background: darkMode ? "#2196f3" : "oklch(96.7% 0.003 264.542)",
         transition: "scale 0.3s",
         "&:hover": {
           scale: 1.05,
