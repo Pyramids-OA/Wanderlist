@@ -5,8 +5,10 @@ import AddDialog from "./AddDialog";
 import { useState, useContext } from "react";
 import { PlacesContext } from "../../contexts/PlacesContext";
 import SearchBar from "./SearchBar";
+import { useSnackbar } from "../../contexts/SnackbarContext";
 
 export default function Home() {
+  const { showSnackbar } = useSnackbar();
   const { darkMode, setDarkMode, favorites } = useContext(PlacesContext);
   const {
     places,
@@ -61,20 +63,19 @@ export default function Home() {
       !image ||
       !imageDetails
     ) {
+      showSnackbar("Please fill in all fields", "error");
       return;
     }
-    setPlaces((prev) => [
-      ...prev,
-      {
-        ...inputAddDialog,
-        id: prev.length + 1,
-      },
-    ]);
-
+    setPlaces((prev) => [...prev, { ...inputAddDialog, id: prev.length + 1 }]);
     setShowAddDialog(false);
+    showSnackbar("Location added successfully", "success");
   }
   function changeMode() {
     setDarkMode(!darkMode);
+    showSnackbar(
+      !darkMode ? "Dark mode enabled" : "Light mode enabled",
+      "info",
+    );
   }
 
   return (

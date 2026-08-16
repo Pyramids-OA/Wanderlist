@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useContext } from "react";
+import { useSnackbar } from "../../contexts/SnackbarContext";
 import { PlacesContext } from "../../contexts/PlacesContext";
 import DeleteDialog from "./DeleteDialog";
 
@@ -24,7 +25,7 @@ import { AltRouteRounded } from "@mui/icons-material";
 export default function CardDetails() {
   const navigate = useNavigate();
   const { id } = useParams();
-
+  const { showSnackbar } = useSnackbar();
   const { places, setPlaces, darkMode, favorites, setFavorites } =
     useContext(PlacesContext);
 
@@ -75,6 +76,7 @@ export default function CardDetails() {
     setPlaces(updatedPlaces);
     setShowUpdateDialog(false);
     navigate(`/home/details/${id}`);
+    showSnackbar("Location updated successfully", "success");
   }
   // FUNCTION DELETE
   function openShowDialog() {
@@ -92,8 +94,13 @@ export default function CardDetails() {
     navigate("/home");
   }
   function handleFavorite() {
+    const isFavorite = favorites.includes(id);
     setFavorites((prev) =>
       prev.includes(id) ? prev.filter((favId) => favId !== id) : [...prev, id],
+    );
+    showSnackbar(
+      isFavorite ? "Removed from favorites" : "Added to favorites",
+      "info",
     );
   }
   return (
