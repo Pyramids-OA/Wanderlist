@@ -24,8 +24,8 @@ export default function Navbar({ changeMode }) {
   };
 
   return (
-    <div className="flex items-center h-20 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500">
-      <div className="flex flex-start items-center ml-6 text-blue-200 text-3xl">
+    <div className="flex items-center h-20 bg-slate-600">
+      <div className="flex flex-start items-center ml-6 text-indigo-200 text-3xl">
         <ExploreIcon sx={{ fontSize: "40px" }} />
         <h1
           onClick={() => (window.location.href = "/Home")}
@@ -34,11 +34,11 @@ export default function Navbar({ changeMode }) {
           Wanderlist
         </h1>
       </div>
-      <div className="flex justify-center items-center ml-10 font-bold text-blue-200 text-xl">
+      <div className="flex justify-center items-center ml-10 font-bold text-indigo-200 text-xl">
         <h1> Welcome {userName}</h1>
         <WavingHandIcon sx={{ fontSize: "50px", marginLeft: "10px" }} />
       </div>
-      <div className="flex justify-end items-center ml-auto mr-6 text-blue-200 text-xl">
+      <div className="flex justify-end items-center ml-auto mr-6 text-indigo-200 text-xl">
         <Stack direction="row" spacing={1}>
           <IconButton
             aria-label="Favorite"
@@ -49,7 +49,7 @@ export default function Navbar({ changeMode }) {
           >
             <FavoriteBorderIcon
               className={
-                favorites.length > 0 ? "text-red-500" : "text-blue-200"
+                favorites.length > 0 ? "text-red-500" : "text-indigo-200"
               }
               sx={{
                 transition: "0.3s",
