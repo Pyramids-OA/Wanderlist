@@ -25,7 +25,7 @@ export default function Navbar({ changeMode }) {
 
   return (
     <div className="flex items-center h-20 bg-slate-600">
-      <div className="flex flex-start items-center ml-6 text-blue-200 text-3xl">
+      <div className="flex flex-start items-center ml-6 text-indigo-200 text-3xl">
         <ExploreIcon sx={{ fontSize: "40px" }} />
         <h1
           onClick={() => (window.location.href = "/Home")}
