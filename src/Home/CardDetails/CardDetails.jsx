@@ -101,7 +101,7 @@ export default function CardDetails() {
       className={`h-auto pb-50 ${
         darkMode
           ? "bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600"
-          : "bg-gradient-to-r from-blue-300 to-blue-400"
+          : "bg-gray-200"
       }`}
     >
       <Container maxWidth="md" height="">
@@ -112,7 +112,7 @@ export default function CardDetails() {
             borderRadius: "30px",
             paddingBottom: 8,
           }}
-          className=" bg-white/20 backdrop-blur-xl"
+          className=" bg-indigo-200 backdrop-blur-xl"
         >
           <div className="mt-1 flex justify-between items-center ">
             <div className="flex items-center">
@@ -121,6 +121,7 @@ export default function CardDetails() {
                 onClick={() => {
                   navigate("/home");
                 }}
+                sx={{ background: "oklch(44.6% 0.043 257.281)" }}
               >
                 <ArrowBackIcon sx={{ marginRight: 1 }} />
                 Back
@@ -158,7 +159,11 @@ export default function CardDetails() {
                   }
                 })()}
               </button>
-              <Button variant="contained" onClick={openShowUpdateDialog}>
+              <Button
+                variant="contained"
+                onClick={openShowUpdateDialog}
+                sx={{ background: "oklch(44.6% 0.043 257.281)" }}
+              >
                 <EditIcon sx={{ marginRight: 1 }} />
                 Edit
               </Button>
@@ -167,8 +172,9 @@ export default function CardDetails() {
                 variant="contained"
                 color="error"
                 onClick={openShowDialog}
+                sx={{ backgroundcolor: "oklch(58.6% 0.253 17.585)" }}
               >
-                <DeleteIcon sx={{ marginRight: 1 }} />
+                <DeleteIcon sx={{ marginRight: 1, color: "white" }} />
                 Delete
               </Button>
             </div>
@@ -198,12 +204,12 @@ export default function CardDetails() {
           <div className="mt-2">
             <h1 className="font-bold">Additional Information</h1>
             <h3>
-              <AttachMoneyIcon className="text-blue-500" />
+              <AttachMoneyIcon className="text-slate-600" />
               <span className="font-bold">Entry Fee:$</span>
               {placeDetails?.entryFee}
             </h3>
             <h3>
-              <HourglassFullIcon className="text-blue-500" />
+              <HourglassFullIcon className="text-slate-600" />
               <span className="font-bold">Opening Hours:</span>
               {placeDetails?.openingHours}
             </h3>

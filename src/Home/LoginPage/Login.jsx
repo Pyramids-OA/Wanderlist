@@ -36,7 +36,7 @@ export default function Login() {
   }
 
   return (
-    <div className="flex justify-center items-center flex-col bg-gray-100 h-screen">
+    <div className="flex justify-center items-center flex-col bg-gray-200 h-screen">
       <Container
         maxWidth="sm"
         className="p-10 shadow-xl rounded-xl flex justify-center items-center flex-col bg-indigo-200 backdrop-blur-xl"

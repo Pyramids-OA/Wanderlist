@@ -82,7 +82,7 @@ export default function Home() {
       className={`h-auto pb-50 ${
         darkMode
           ? "bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600"
-          : "bg-gradient-to-r from-blue-300 to-blue-400"
+          : "bg-gray-200"
       }`}
     >
       <div
@@ -253,17 +253,16 @@ export default function Home() {
             sx={{
               fontSize: 120,
               m: 1,
-              color: "rgb(37 99 235 / var(--tw-text-opacity, 1))",
+              color: "oklch(44.6% 0.043 257.281)",
               transition: "all 0.3s ease",
 
               "&:hover": {
-                color: "rgb(29 78 216)",
+                color: "oklch(27.9% 0.041 260.031)",
                 transform: "scale(1.1)",
-                filter: "drop-shadow(0 0 8px rgba(37,99,235,0.6))",
               },
             }}
           />
-          <span className="opacity-0 translate-y-2 text-md text-blue-600 font-bold transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+          <span className="opacity-0 translate-y-2 text-md text-slate-700 font-bold transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
             Add New Location
           </span>
         </button>
