@@ -104,7 +104,13 @@ export default function Home() {
       showSnackbar("Please fill in all fields", "error");
       return;
     }
-    setPlaces((prev) => [...prev, { ...inputAddDialog, id: prev.length + 1 }]);
+    setPlaces((prev) => {
+      const nextId =
+        prev.length > 0
+          ? Math.max(...prev.map((p) => Number(p.id) || 0)) + 1
+          : 1;
+      return [...prev, { ...inputAddDialog, id: nextId }];
+    });
     setShowAddDialog(false);
     showSnackbar("Location added successfully", "success");
   }
