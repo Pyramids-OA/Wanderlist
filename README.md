@@ -44,20 +44,8 @@ Persistence Destinations, favorites, theme preference, and the logged-in usernam
 
 Authentication A login screen gates access to the destination list. Once logged in, the username is displayed in the navigation bar for the duration of the session.
 
-Folder structure
 
-src/Home/HomePage/ — main destination grid, search bar, filters, and navigation
-src/Home/CardDetails/ — destination detail view, edit dialog, and delete dialog
-src/Home/LoginPage/ — login form
-src/contexts/ — shared application state
-PlacesContext.jsx — destinations, categories, ratings, favorites, and theme
-LoginFormInputContext.jsx — authentication state
-SnackbarContext.jsx — global notification system
-src/assets/ — static images
-src/App.jsx — route definitions
-src/main.jsx — application entry point
-
-  State management Three React Context providers sit at the root of the application:
+State management Three React Context providers sit at the root of the application:
 
 PlacesProvider holds the destination list, active filters, sort mode, theme state, and favorites. It also owns the local storage read and write logic, so any component that updates a destination, a filter, or the theme automatically persists that change without extra boilerplate.
 LoginInputProvider holds the login form state and the currently logged-in username, also persisted to local storage.
