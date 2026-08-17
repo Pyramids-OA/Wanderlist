@@ -44,21 +44,18 @@ Persistence Destinations, favorites, theme preference, and the logged-in usernam
 
 Authentication A login screen gates access to the destination list. Once logged in, the username is displayed in the navigation bar for the duration of the session.
 
-Architecture
+Folder structure
 
-The application follows a component-based structure built around React Context for state management, avoiding the need for an external state management library given the size of the project.
-src/
-  Home/
-    HomePage/        Main destination grid, search bar, filters, navigation
-    CardDetails/      Destination detail view, edit and delete dialogs
-    LoginPage/        Login form
-  contexts/           Shared application state
-    PlacesContext.jsx       Destinations, categories, ratings, favorites, theme
-    LoginFormInputContext.jsx  Authentication state
-    SnackbarContext.jsx     Global notification system
-  assets/             Static images
-  App.jsx             Route definitions
-  main.jsx            Application entry point
+src/Home/HomePage/ — main destination grid, search bar, filters, and navigation
+src/Home/CardDetails/ — destination detail view, edit dialog, and delete dialog
+src/Home/LoginPage/ — login form
+src/contexts/ — shared application state
+PlacesContext.jsx — destinations, categories, ratings, favorites, and theme
+LoginFormInputContext.jsx — authentication state
+SnackbarContext.jsx — global notification system
+src/assets/ — static images
+src/App.jsx — route definitions
+src/main.jsx — application entry point
 
   State management Three React Context providers sit at the root of the application:
 
